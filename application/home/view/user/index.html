@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+{include file="header" /}
+<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
+<!--<link href="https://cdn.bootcss.com/datatables/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet">-->
+<style>
+    .table {
+        text-align: center;
+        height: auto;
+    }
+
+    .table tr td {
+        /*height: 20px;*/
+        line-height: 20px;
+    }
+</style>
+{include file="topMenu" /}
+{include file="menu" /}
+
+<ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i>用户管理</a></li>
+</ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-12">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">用户增加</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">用户管理</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="user" class="table table-bordered table-hover dataTable" role="grid"
+                                    aria-describedby="example2_info">
+                                    <thead>
+                                    <tr>
+                                        <td>uid</td>
+                                        <td>用户名</td>
+                                        <td>手机号</td>
+                                        <td>编制</td>
+                                        <td>职位</td>
+                                        <td>部门</td>
+                                        <td>上一次登陆时间</td>
+                                        <td>状态</td>
+                                        <td>备注</td>
+                                        <td style="width: 130px">操作</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {volist id="user" name="user"}
+                                        <tr>
+                                            <td>{$user.uid}</td>
+                                            <td>{$user.name}</td>
+                                            <td>{$user.phone}</td>
+                                            <td>{$user.preparedBy=1 ? '行健编' : '西大编'}</td>
+                                            <td>{$user.position}</td>
+                                            <td>{$user.department}</td>
+                                            <td>{$user.lasttime}</td>
+                                            <td>{$user.status}</td>
+                                            <td></td>
+                                            <td>
+                                                <button class="btn btn-primary" onclick="getUser('{$user.uid}')" data-toggle="modal" data-target="#modify">修改</button>
+                                                <button class="btn btn-danger" onclick="del('{$user.uid}')">删除</button>
+                                            </td>
+                                        </tr>
+                                    {/volist}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+</section>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">用户添加</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="name">教师姓名</label>
+                        <input type="text" class="form-control" id="name" placeholder="教师姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="password" class="form-control" id="password" placeholder="请输入密码">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">确认密码</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="请再输入一次密码">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">手机号</label>
+                        <input type="number" class="form-control" id="phone" placeholder="请输入手机号码">
+                    </div>
+                    <div class="form-group">
+                        <label for="bz">编制</label>
+                        <select name="" id="bz" class="form-control">
+                            <option value="1" selected>行健编</option>
+                            <option value="2">西大编</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="zw">职位</label>
+                        <select name="" id="zw" class="form-control" onclick="load('position',$(this))" >
+                            <option value="" selected disabled>请选择职位</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="xb">学部</label>
+                        <select name="" id="xb" class="form-control" onclick="load('xb',$(this))" >
+                            <option value="" selected disabled>请选择学部</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="save($(this))">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="modal fade" id="modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modifyLabel">用户添加</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="name">用户编号</label>
+                        <input type="text" class="form-control" id="m-uid" value="" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">教师姓名</label>
+                        <input type="text" class="form-control" id="m-name" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码&nbsp;<img id="eye" src="__STATIC__/img/eye.png" width="20px" alt=""></label>
+                        <input type="text" class="form-control" id="m-password" placeholder="请输入新密码">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">手机号</label>
+                        <input type="number" class="form-control" id="m-phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="bz">编制</label>
+                        <select name="" id="m-bz" class="form-control">
+                            <option value="1" selected>行健编</option>
+                            <option value="2">西大编</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="zw">职位</label>
+                        <select name="" id="m-zw" class="form-control" onclick="load('position',$(this))" >
+                            <option value="" selected disabled>请选择职位</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="xb">学部</label>
+                        <select name="" id="m-xb" class="form-control" onclick="load('xb',$(this))" >
+                            <option value="" selected disabled>请选择学部</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="m-status">状态</label>
+                        <select name="" id="m-status" class="form-control">
+                            <option value="10">正常</option>
+                            <option value="20">禁用</option>
+                            <option value="40">限制</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="m-update" data-uid="" onclick="update($(this))">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content-wrapper -->
+{include file="footer" /}
+<!--<script src="__STATIC__/js/jquery.dataTables.min.js"></script>-->
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.bootcss.com/datatables/1.10.19/js/dataTables.bootstrap.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#user').DataTable({
+            language: {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+        });
+
+    });
+    function load(info,my) {
+        my.find("option").attr('disabled',true)
+        my.children(":first").text('加载中...')
+        $.get('{:url("users/getuserinfo")}', {'info': info}, function (res) {
+            my.empty()
+
+            for(var i = 0;i<res.data.length;i++){
+                my.append('<option value="'+i+'">'+res.data[i]+'</option>')
+            }
+        })
+
+    }
+    function save(btn) {
+        var name = $('input#name').val();
+        var password = $('input#password').val();
+        var rePassword = $('input#confirmPassword').val();
+        var phone = $('input#phone').val();
+        var position = $('select#zw').val();
+        var xb = $('select#xb').val();
+        var bz = $('select#bz').val();
+        if(password != rePassword){
+            layer.msg('两次密码输入不一致，请检查！');
+            return ;
+        }
+        var data = {
+            'name':name,
+            'password':password,
+            'phone':phone,
+            'position':position,
+            'xb':xb,
+            'bz':bz,
+        }
+        btn.text('添加中...');
+        btn.attr('disabled',true)
+        $.ajax({
+            type:'post',
+            data:data,
+            url:'{:url("users/add")}',
+            timeout: 10000,
+            success:function (res) {
+                layer.msg(res.info)
+                if(res.status == 1){
+                    window.location.reload();
+                }
+            },
+            error:function (res) {
+                btn.text('添加')
+                btn.attr('disabled',false)
+                layer.msg(res.responseJSON.info)
+            }
+        })
+
+    }
+    function del(uid) {
+        layer.confirm('确认删除吗？',{icon:3,title:'删除'},function (index) {
+            $.ajax({
+                type:'delete',
+                data:{'uid':uid},
+                url:'{:url("users/delete")}',
+                timeout: 10000,
+                success:function (res) {
+                    layer.msg(res.info)
+                    if(res.status == 1){
+                        window.location.reload();
+                    }
+                },
+                error:function (res) {
+                    console.log(res)
+                    layer.msg(res.responseJSON.info)
+                }
+            })
+        },function () {
+            layer.close()
+        })
+    }
+    function getUser(uid) {
+        $.ajax({
+            type:"get",
+            url:'{:url("users/getUser")}',
+            data:{uid:uid},
+            timeout:10000,
+            success:function (res) {
+                if(res.status == 1){
+                    console.log(res.data)
+                    $('#m-name').val(res.data.name)
+                    $('#m-password').val("")
+                    $('#m-uid').val(res.data.uid)
+                    $('#m-phone').val(res.data.phone)
+                    $('#m-status').find("option[value="+res.data.status+"]").attr('disabled',true);
+                    $('#m-status').find("option[value="+res.data.status+"]").attr('selected',true);
+                    $('#m-update').data('uid',res.data.uid)
+                }
+            }
+        })
+    }
+    $('img#eye').click(function () {
+        if($('input#m-password').attr('type') == "text"){
+            $('input#m-password').attr('type','password');
+            $(this).attr('src','__STATIC__/img/closeEye.png');
+        }else{
+            $('input#m-password').attr('type','text');
+            $(this).attr('src','__STATIC__/img/eye.png');
+
+        }
+    })
+    function update(button) {
+        var uid = button.data('uid');
+        var data = {
+            'uid':uid,
+            'name':$('input#m-name').val(),
+            'pwd':$('input#m-password').val(),
+            'phone':$('input#m-phone').val(),
+            'xb':$('select#m-xb').val(),
+            'bz':$('select#m-bz').val(),
+            'position':$('select#m-zw').val(),
+            'status':$('select#m-status').val(),
+
+        }
+        $.ajax({
+            type: "post",
+            url: '{:url("users/update")}',
+            data: data,
+            timeout: 10000,
+            success:function (res) {
+                layer.msg(res.info)
+                if(res.status == 1){
+                    window.location.reload();
+                }
+            },
+            error:function (res) {
+                console.log(res)
+                layer.msg(res.responseJSON.info)
+            }
+        })
+
+    }
+</script>

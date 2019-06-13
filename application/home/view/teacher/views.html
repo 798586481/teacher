@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+{include file="header" /}
+<style>
+    .table{
+        text-align: center;
+        height: auto;
+    }
+    .table tr td{
+        /*height: 20px;*/
+        line-height: 20px;
+    }
+</style>
+{include file="topMenu" /}
+{include file="menu" /}
+
+<ol class="breadcrumb">
+    <li><a href="#" ><i class="fa fa-dashboard"></i>教师工作量</a></li>
+    <li class="active">教师工作量查看</li>
+</ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">1.本科理论课</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" style="overflow-y:auto;">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>学生班级及课程名称</th>
+                        <th>授课时间</th>
+                        <th>计划学时</th>
+                        <th>课程系数</th>
+                        <th>效益系数/(人数)</th>
+                        <th>命题工作量</th>
+                        <th>监考工作量</th>
+                        <th>重复班系数</th>
+                        <th>标准学时</th>
+                        <th>状态</th>
+                        <th style="width: 130px">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="bkllk">
+                    {volist name="bkllk" id="bkllk"}
+                    <tr>
+                        <td>{$bkllk.kcmc}</td>
+                        <td>{$bkllk.sksj}</td>
+                        <td valign="middle">{$bkllk.jhxs}</td>
+                        <td>{$bkllk.kcxs}</td>
+                        <td>{$bkllk.xyxs}</td>
+                        <td>{$bkllk.mtgzl}</td>
+                        <td>{$bkllk.jkgzl}</td>
+                        <td>{$bkllk.cfbxs}</td>
+                        <td>{$bkllk.bzxs}</td>
+                        <td>{$bkllk.status}</td>
+                        <td>
+                            <button class="btn btn-info" id="b_modify" data-kcxs="{$bkllk.kcxs}" data-kcmc="{$bkllk.kcmc}" data-mtgzl="{$bkllk.mtgzl}" data-jkgzl="{$bkllk.jkgzl}" data-id="{$bkllk.id}" data-toggle="modal" data-target="#modify" data-relation="{$bkllk.classesCourseId}">修改</button>
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody></table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">3.制图辅导课</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body" style="overflow-y:auto;">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>课内时数</th>
+                            <th>标准学时</th>
+                            <th>状态</th>
+                            <th style="width: 130px">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="ztfdk">
+                        {volist name="ztfdk" id="ztfdk"}
+                        <tr>
+                            <td>{$ztfdk.x}</td>
+                            <td>{$ztfdk.sum}</td>
+                            <td>{$ztfdk.status<=10?'未审核':'已审核'}</td>
+                            <td>
+                                <button class="btn btn-info" id="t_modify"  data-id="{$ztfdk.id}" data-toggle="modal" data-target="#modify" {$ztfdk.status<=10?'':'disabled'}>修改</button>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody></table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+<div class="modal fade" id="modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="save" data-fun="" data-id="" data-relation="">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="t_modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="t_myModalLabel"></h4>
+            </div>
+            <div class="t_modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="t_save" data-fun="" data-id="" data-relation="">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{include file="footer" /}
+<script>
+    $(function () {
+        layer.config({
+            extend: 'default/delete.css' //同样需要加载新皮肤
+        });
+        $('#modify').on('hide.bs.modal', function () {
+            //当模态框关闭清空所有操作
+            $('h4#myModalLabel').text("");
+            $('div.modal-body').html("");
+            $('button#save').data('id',"");
+            $('button#save').data('fun',"");
+        })
+        $('button#b_delete').click(function () {
+            var id = $(this).data('id');
+            layer.open({
+                btn:['删除','取消'],
+                title:"确认删除？",
+                skin: 'layui-ext-yourskin',
+                icon:2,
+                content:"您是否要删除这条记录？",
+                yes:function () {
+                    $.ajax({
+                        type:'delete',
+                        data:{'type':'bkllk','id':id},
+                        url:'{:url("teacher/delete")}',
+                        timeout: 10000,
+                        success:function (res) {
+                            layer.msg(res.info)
+                            if(res.status == 1){
+                                window.location.reload();
+                            }
+                        },
+                        error:function (res) {
+                            console.log(res)
+                            // layer.msg(res.responseJSON.info)
+                        }
+                    })
+                }
+
+            })
+        })
+        $('button#b_modify').click(function () {
+            $('div.modal-body').html("")
+            $('h4#myModalLabel').text("本科理论课修改");
+            var kcmc = $(this).data('kcmc')
+            var html = '<form><div class="form-group"><label for="kcmc">课程名称：</label><span id="kcmc">'+kcmc+'</span></div><div class="form-group"><label for="b_kcxs">课程系数</label><select id="b_kcxs" class="form-control">{volist name="kcxs" id="kcxs"}<option value="{$kcxs.id}" data-id="{$kcxs.values}">{$kcxs.tips}(k={$kcxs.values})</option>{/volist}</select></div><div class="form-group"><label for="b_mtgzl">命题工作量</label><select name=""id="b_mtgzl"class="form-control"><option value="3">命题</option><option value="1">使用题库</option></select></div><div class="form-group"><label for="b_jkgzl">监考工作量</label><select name=""id="b_jkgzl"class="form-control"><option value="1">监考</option><option value="0">不监考</option></select></div></form>'
+            var kcxs = $(this).data('kcxs');
+            var mtgzl = $(this).data('mtgzl');
+            var jkgzl = $(this).data('jkgzl');
+            $('div.modal-body').append(html)
+            $('select#b_kcxs').find("option[data-id='"+kcxs+"']").attr({"selected":true});
+            $('select#b_mtgzl').find("option[value='"+mtgzl+"']").attr({"selected":true});
+            $('select#b_jkgzl').find("option[value='"+jkgzl+"']").attr({"selected":true});
+            $('button#save').data('id',$(this).data('id'));
+            $('button#save').data('fun',"bkllk");
+            $('button#save').data('relation',$(this).data('relation'));
+        })
+        $('button#t_modify').click(function () {
+            $('div.modal-body').html("")
+            $('h4#myModalLabel').text("本科理论课修改");
+            var html = '<form><div class="form-group"><label for="kcmc">课内时数：</label><input id="b_kcxs" class="form-control" placeholder="请输入新的课内实数"></div></form>'
+            $('div.modal-body').append(html)
+        })
+        $('button#save').click(function () {
+            var id = $(this).data('id');
+            var fun = $(this).data('fun');
+            var relation = $(this).data('relation');
+            var b_K = parseFloat($('select#b_kcxs option:selected').data('id'));
+            var b_M = parseInt($('select#b_mtgzl option:selected').val());
+            var b_J = parseInt($('select#b_jkgzl option:selected').val());
+            var check_K = $('button[id=b_modify][data-id='+id+']').data('kcxs');
+            var check_M = $('button[id=b_modify][data-id='+id+']').data('mtgzl');
+            var check_J = $('button[id=b_modify][data-id='+id+']').data('jkgzl');
+            if(!(check_J != b_J || check_K != b_K || check_M != b_M)){
+                layer.msg('您没有做任何更改');
+                return ;
+            }
+            var data = {
+                'id':id,'type':fun,'K':b_K,'J':b_J,'M':b_M,'relation':relation,
+            }
+            $(this).text("保存中...");
+            $(this).attr('disabled',true);
+            $.ajax({
+                'url':'{:url("teacher/updates")}',
+                'data':data,
+                'type':'post',
+                'timeout':20000,//20秒
+                success:function (res) {
+                    layer.msg(res.info)
+                    if(res.status == 1){
+                        window.location.reload();
+                    }else{
+                        $("button#save").text("保存");
+                        $("button#save").attr('disabled',false);
+                    }
+                },error:function (res) {
+                    layer.msg(res.responseJSON.info)
+                    $("button#save").text("保存");
+                    $("button#save").attr('disabled',false);
+                }
+            })
+        })
+    })
+</script>

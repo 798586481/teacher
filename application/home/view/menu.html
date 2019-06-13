@@ -1,0 +1,47 @@
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="__STATIC__/img/person.png" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+                <p>{$name}</p>
+                <a href="#"><i class="fa fa-circle text-success"></i>在线(Online)</a>
+            </div>
+        </div>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">主菜单</li>
+            {volist name="menus" id="menu"}
+            <li {present name="menu.checkChild"}class="treeview"{/present}>
+                <a href="{:url($menu.urls)}">
+                    <i class="fa {$menu.icon}"></i> <span>{$menu.name}</span>
+
+                    <span class="pull-right-container">
+                        {present name="menu.checkChild"}<i class="fa fa-angle-left pull-right"></i>{/present}
+
+            </span>
+                </a>
+            {notempty name="$menu.checkChild"}
+            <ul class="treeview-menu">
+                {volist name="menu.child" id="child"}
+
+                    <li><a href="{:url($child.urls)}"><i class="fa {$child.name}"></i>{$child.name}</a></li>
+
+                {/volist}
+            </ul>
+            {/notempty}
+            </li>
+            {/volist}
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            {$title}
+            <small>Version {$version}</small>
+        </h1>

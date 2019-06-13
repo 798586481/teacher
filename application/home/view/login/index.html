@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>用户登录</title>
+</head>
+<link rel="stylesheet" href="__STATIC__/css/material.indigo-pink.min.css">
+<style>
+    .bg{
+        background: url("__STATIC__/img/login-img.jpg");
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        min-width: 100%;
+        z-index: -10;
+        zoom: 1;
+        background-size: cover;
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-position: center 0;
+        /*filter: blur(13px);*/
+    }
+    .content{
+        position: absolute;
+        top: 20%;
+        bottom: 30%;
+        width: 100%;
+        margin: 0 auto;
+
+    }
+    .content form{
+        border-radius: 7px;
+        background: #fff;
+        margin: 0 auto;
+        border: 1px solid #fff;
+        /*background: red;*/
+        width: 400px;
+        padding: 0 30px;
+        padding-top:50px ;
+        padding-bottom:50px ;
+        text-align: center;
+    }
+    .mdl-textfield{
+        width: 65%;
+    }
+    .btn-login{
+        width: 65%;
+        height: 40px;
+        border: 0px;
+        background: #18306E;
+        color: #fff;
+        font-size: 15px;
+    }
+    .order{
+        margin: 30px auto;
+        width: 65%;
+        background: red;
+    }
+    .order #wjmm{
+        float: left;
+        font-size: 13px;
+        color: #18306E;
+    }
+    .yzm-img{
+        float: right;
+        margin-right: 70px
+    }
+    @media screen and (max-width: 500px) {
+        .content form{
+            width: 80%;
+            background: rgba(240, 255, 255, 0.5);
+            border: 0px;
+
+        }
+        .btn-login{
+            width: 100%;
+            margin-top: 30px;
+        }
+        .order{
+            width: 100%;
+        }
+        .yzm-img{
+            margin-right: 0px;
+        }
+        .mdl-textfield{
+            width: 100%;
+            margin-left: 0px !important;
+        }
+        .yzm .mdl-textfield{
+            width: 50% !important;
+        }
+
+        .content label{
+            color: #000;
+        }
+        .content input{
+            border-bottom: 1px solid #000;
+        }
+
+    }
+</style>
+<body>
+    <div class="bg"></div>
+    <div class="content">
+        <form>
+            <div style="text-align: center;font-size: 20px;margin-bottom: 15px">教师管理系统登录</div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="username" pattern="^1[34578]\d{9}$">
+                <label class="mdl-textfield__label" for="username">手机号...</label>
+                <span class="mdl-textfield__error">手机号格式错误</span>
+            </div>
+            <br>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="password" id="pwd">
+                <label class="mdl-textfield__label" for="pwd">密码...</label>
+            </div>
+            <div class="yzm" style="display: none">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 30%;float: left;margin-left: 70px">
+                    <input class="mdl-textfield__input" type="text" id="yzm" maxlength="4" pattern="-?[0-9]*(\.[0-9]+)?">
+                    <label class="mdl-textfield__label" for="yzm">验证码</label>
+                    <span class="mdl-textfield__error">验证码只能为数字</span>
+                </div>
+                <div class="yzm-img"><img src="{:captcha_src()}" alt="yzm" onclick="this.src='{:captcha_src()}?id='+Math.random()" ></div>
+            </div>
+
+            <br>
+            <button id="login" type="button" class="btn-login">登  录</button>
+            <br>
+            <div class="order">
+                <span id="wjmm">忘记密码</span>
+            </div>
+        </form>
+
+    </div>
+
+</body>
+<script src="__STATIC__/js/jquery.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+<script src="__STATIC__/js/material.min.js"></script>
+<script src="__STATIC__/js/layer.js"></script>
+<script>
+$(function () {
+    $('input#username').blur(function () {
+        var username = $(this).val();
+        $.get("{:url('login/checkusername')}",{'username':username},function (res) {
+            if(res.status == -1){
+                $("div.yzm").show();
+            }
+        })
+    })
+    $('button#login').click(function () {
+        var username = $('input#username').val();
+        var pwd = $('input#pwd').val();
+        var yzm = $('input#yzm').val();
+        $(this).text("登录中...");
+        $(this).attr("disabled",true);
+        $.ajax({
+            type:"post",
+            url:"{:url('login/checklogin')}",
+            data:{'username':username,'pwd':pwd,'yzm':yzm},
+            success:function (res) {
+                layer.msg(res.info);
+                if(res.data.to == 1){
+                    $("div.yzm").show();
+                }
+                if(res.status == 1){
+                    $('button#login').text("登录成功")
+                   window.location.href="{:url('index/index')}"
+                }else if(res.status == -1){
+                    $('button#login').attr("disabled",false);
+                    $('button#login').text("登录")
+                }
+
+            },
+            error:function (jqXHR, textStatus, errorThrown,) {
+                layer.msg(jqXHR.responseJSON.info);
+                if(jqXHR.responseJSON.status == -1){
+                    $('button#login').attr("disabled",false);
+                    $('button#login').text("登录")
+                }
+            }
+        })
+        
+    })
+})
+</script>
+</html>

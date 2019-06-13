@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+{include file="header" /}
+{include file="topMenu" /}
+{include file="menu" /}
+<style>
+    .layui-field-box .row{
+        margin-left: 3px;
+        margin-right: 3px;
+    }
+</style>
+<!-- Content Wrapper. Contains page content -->
+        <ol class="breadcrumb">
+            <li><a href="#" ><i class="fa fa-dashboard"></i>教师工作量</a></li>
+            <li class="active">教师工作量填写</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Info boxes -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">1.本科理论课</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form class="form-horizontal" id="b">
+                        <div class="box-body" style="width: 90%;margin: 0 auto">
+
+                            <div class="row"><div class="form-group">
+                                <label for="b_kcmc" class="col-sm-2 control-label">课程名称</label>
+
+                                <div class="col-sm-9">
+                                    <select name="b_kcmc" id="b_kcmc" class="form-control">
+                                        <option value="0" disabled selected>请选择您的班级、课程</option>
+
+                                    </select>
+                                </div>
+                            </div></div>
+                            <div class="row"><div class="form-group">
+                                <label for="b_sksj" class="col-sm-2 control-label">授课时间</label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="b_sksj" placeholder="授课时间(上半年或下半年)">
+                                </div>
+                            </div></div>
+                            <div class="row"><div class="form-group">
+                                <label for="b_jhxs" class="col-sm-2 control-label">计划学时</label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="b_jhxs" placeholder="计划学时S">
+                                </div>
+                            </div></div>
+                            <div class="row"><div class="form-group">
+                                <label for="b_kcxs" class="col-sm-2 control-label">课程系数</label>
+
+                                <div class="col-sm-9">
+                                    <select id="b_kcxs" class="form-control">
+                                        <option value="0" disabled selected>请选择课程系数</option>
+                                        {volist name="kcxs" id="kcxs"}
+                                            <option value="{$kcxs.id}" data-id="{$kcxs.values}">{$kcxs.tips}(k={$kcxs.values})</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div></div>
+                            <div class="row">
+                                <div class="form-group">
+                                <label for="b_xyxs" class="col-sm-2 control-label">效益系数</label>
+
+                                <div class="col-sm-4">
+                                    <input type="number" class="form-control" id="b_xyxsRs" placeholder="人数">
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="b_xyxsX" placeholder="X">
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row"><div class="form-group">
+                                <label for="b_mtgzl" class="col-sm-2 control-label">命题工作量</label>
+
+                                <div class="col-sm-9">
+                                    <select name="" id="b_mtgzl" class="form-control">
+
+                                    </select>
+                                </div>
+                            </div></div>
+                            <div class="row"><div class="form-group">
+                                <label for="b_jkgzl" class="col-sm-2 control-label">监考工作量</label>
+
+                                <div class="col-sm-9">
+                                    <select id="b_jkgzl" class="form-control">
+
+                                    </select>
+                                </div>
+                            </div></div>
+                            <div class="row"><div class="form-group">
+                                <label for="b_cfbxs" class="col-sm-2 control-label">重复班系数</label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="b_cfbxs" placeholder="重复班系数C" value="1">
+                                </div>
+                            </div></div>
+                            <div class="row">
+                                <div style="float: right;margin-right: 2%;font-size: 20px">
+                                    <span>标准学时:</span>
+                                    <span id="b_total" style="color: #ff6600;font-size: 35px">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="button" id="b_save" class="btn btn-info pull-right">保存</button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">3.制图辅导课</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form class="form-horizontal" id="t">
+                        <div class="box-body" style="width: 90%;margin: 0 auto">
+
+                            <div class="row"><div class="form-group">
+                                <label for="t_fdxss" class="col-sm-2 control-label">辅导学时数</label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="t_fdxss" placeholder="辅导学时数">
+                                </div>
+                            </div></div>
+                            <div class="row">
+                                <div style="float: right;margin-right: 2%;font-size: 20px">
+                                    <span>标准学时:</span>
+                                    <span id="t_total" style="color: #ff6600;font-size: 35px">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="button" id="t_save" class="btn btn-info pull-right">保存</button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">2.专职辅导</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form class="form-horizontal" id="z">
+                        <div class="box-body" style="width: 90%;margin: 0 auto">
+
+                            <div class="row"><div class="form-group">
+                                <label for="z_kcmc" class="col-sm-2 control-label">课程名称</label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="z_kcmc" placeholder="课程名称" disabled>
+                                </div>
+                            </div></div>
+                            <div class="row"><div class="form-group">
+                                <label for="z_sjks" class="col-sm-2 control-label">实际课时</label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="z_sjks" placeholder="实际课时" disabled>
+                                </div>
+                            </div></div>
+                            <div class="row"><div class="form-group">
+                                <label for="z_xsrs" class="col-sm-2 control-label">学生人数</label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="z_xsrs" placeholder="学生人数" disabled>
+                                </div>
+                            </div></div>
+                            <div class="row"><div class="form-group">
+                                <label for="z_x" class="col-sm-2 control-label">X</label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="z_x" placeholder="X" disabled>
+                                </div>
+                            </div></div>
+                            <div class="row">
+                                <div style="float: right;margin-right: 2%;font-size: 20px">
+                                    <span>标准学时:</span>
+                                    <span id="z_total" style="color: #ff6600;font-size: 35px">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-info pull-right">保存</button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">4.指导实验</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form class="form-horizontal" id="d">
+                        <div class="box-body" style="width: 90%;margin: 0 auto">
+
+                            <div class="row"><div class="form-group">
+                                <label for="d_kcmc" class="col-sm-2 control-label">课程名称</label>
+
+                                <div class="col-sm-9">
+                                    <select name="" id="d_kcmc" class="form-control">
+                                        <option value="0" disabled selected>
+                                            请选择学生班级及课程名称
+                                        </option>
+                                    </select>
+                                </div>
+                            </div></div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="d_ps" class="col-sm-2 control-label">批数</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" id="d_ps" min="1" max="5" placeholder="批数P" value="1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="d_pc">
+                            </div>
+
+                            <div class="row">
+                                <div style="float: right;margin-right: 2%;font-size: 20px">
+                                    <span>标准学时:</span>
+                                    <span id="d_total" style="font-size: 30px">0</span>
+                                    <!--<span>实际标准学时:</span>-->
+                                    <!--<span id="d_now" style="color: #ff6600;font-size: 30px">32</span>-->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-info pull-right">保存</button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{include file="footer" /}
+<script>
+        $.get('{:url("teacher/getCourse")}','',function (index) {
+            for (var i = 0;i<index.length;i++){
+                $('select#b_kcmc').append('<option value="'+index[i].ids+'">'+index[i].name+'</option>')
+            }
+            bResult = index;
+        })
+        $.get('{:url("teacher/getExperiment")}','',function (index) {
+            for (var i = 0;i<index.data.length;i++){
+                $('select#d_kcmc').append('<option value="'+index.data[i].ids+'">'+index.data[i].name+'</option>')
+            }
+            dResult = index.data;
+        })
+        $.get('{:url("teacher/getDepartment")}','',function (index) {
+            dResultDepartment = index;
+        })
+
+         $("form#b select#b_kcmc").change(function () {
+            var id = $('#b_kcmc option:selected').val()
+            bResult.forEach(function (v,i) {
+                if(bResult[i].ids == id){
+                    $('select#b_jkgzl').html("");
+                    $('select#b_mtgzl').html("");
+                    cc('input#b_sksj',bResult[i].sksj)
+                    cc('input#b_jhxs',bResult[i].jhxs)
+                    cc('input#b_xyxsRs',bResult[i].people)
+                    cc('input#b_xyxsX',bResult[i].X)
+                    if(bResult[i].jkgzl == 1){
+                        $('select#b_jkgzl').append('<option value="1" selected>监考</option>')
+                    }
+                    if(bResult[i].mtgzl == 3){
+                        $('select#b_mtgzl').append('<option value="3" selected>命题</option>')
+                    }
+                    $('select#b_jkgzl').append('<option value="0">不监考</option>')
+                    $('select#b_mtgzl').append('<option value="1">使用题库</option>')
+                }
+            })
+        })
+         $("form#d select#d_kcmc").change(function () {
+             var id = $('#d_kcmc option:selected').val()
+             dResult.forEach(function (v,i) {
+                 if(dResult[i].ids == id){
+                     dResultData = dResult[i];
+                 }
+             })
+         })
+        function cc(names,number){
+            $(names).val(number);
+            $(names).attr('disabled',true);
+        }
+        $("form#b select").blur(function(){
+            //计算本科理论课学时
+            var b_S = parseInt($('input#b_jhxs').val());
+            var b_K = parseFloat($('select#b_kcxs option:selected').data('id'));
+            var b_X = parseFloat($('input#b_xyxsX').val());
+            var b_M = parseInt($('select#b_mtgzl option:selected').val());
+            var b_J = parseInt($('select#b_jkgzl option:selected').val());
+            var b_C = parseInt($('input#b_cfbxs').val());
+            var b_G1 = [(6*b_X)+(b_S*b_X*b_K)]*b_C+b_M+b_J
+            $('span#b_total').text(b_G1.toFixed(2))
+        });
+        $("input#t_fdxss").blur(function(){
+            //计算制图辅导学时
+            var t_fdxss = parseInt($('input#t_fdxss').val());
+            var t_G1 = t_fdxss*0.4
+            $('span#t_total').text(t_G1.toFixed(2))
+        });
+        $("button#t_save").click(function () {
+            var t_G1 =$('span#t_total').text();
+            if(t_G1 <= 0){
+                layer.msg("请填写完整信息");
+                return ;
+            }
+            var S = parseInt($('input#t_fdxss').val());
+            layer.open({
+                btn: ['确认', '取消'],
+                title: '3.制图辅导课'
+                ,content: '当前标准学时'+t_G1+'，确认保存？',
+                yes: function(index, layero){
+                    $('button#t_save').text('保存中...');
+                    $('button#t_save').attr('disabled',true);
+                    $.post('{:url("teacher/savePhoto")}',{'S':S},function (res) {
+                        layer.msg(res.info)
+                        if(res.status == 1){
+                            window.location.reload();
+                            $('button#t_save').text('保存成功');
+                        }else if (res.status == -1){
+                            $('button#t_save').text('保存');
+                            $('button#t_save').attr('disabled',false);
+                        }
+                    })
+                }
+
+            });
+        })
+        $("button#b_save").click(function () {
+            var id = $('#b_kcmc option:selected').val();
+            var b_K = parseFloat($('select#b_kcxs option:selected').data('id'));
+            var b_M = parseInt($('select#b_mtgzl option:selected').val());
+            var b_J = parseInt($('select#b_jkgzl option:selected').val());
+            var b_C = parseInt($('input#b_cfbxs').val());
+            var b_G1 =$('span#b_total').text();
+            if(isNaN(b_G1)){
+                layer.msg('您有未填项，请检查')
+                return ;
+            }
+            var data = {
+                'id':id,
+                'K':b_K,
+                'M':b_M,
+                'J':b_J,
+                'C':b_C,
+            }
+
+            layer.open({
+                btn: ['确认', '取消'],
+                title: '1.本科理论课'
+                ,content: '当前标准学时'+b_G1+'，确认保存？',
+                yes: function(index, layero){
+                    $('button#b_save').text('保存中...');
+                    $('button#b_save').attr('disabled',true);
+                    $.post('{:url("teacher/saveCourse")}',data,function (res) {
+                        layer.msg(res.info)
+                        if(res.status == 1){
+                             window.location.reload();
+                            $('button#b_save').text('保存成功');
+                        }else if (res.status == -1){
+                            $('button#b_save').text('保存');
+                            $('button#b_save').attr('disabled',false);
+                        }
+                    })
+                }
+
+            });
+        })
+        $("input#d_ps").blur(function () {
+            var value = parseInt($(this).val());
+            var jhxs = parseInt(dResultData.jhxs);
+            var xyxs = parseFloat(dResultData.X);
+            if(value <= 0){
+                layer.msg('请输入大于0的数字');
+                $(this).val('');
+                return ;
+            }
+            var total = value * jhxs * xyxs;
+            $('div#d_pc').html('');
+            for(var i=1;i<=value;i++){
+                var d_xb = '';
+                for (var i1=0;i1<dResultDepartment.length;i1++){
+                    d_xb += '<option value="'+dResultDepartment[i1].values+'" data-id="'+i+'">'+dResultDepartment[i1].remarks+'</option>'
+                }
+                var html = '<fieldset class="layui-elem-field"><legend>第 '+i+' 批次</legend><div class="layui-field-box"><div class="row"><div class="form-group"><label for="d_xb" class="col-sm-2 control-label">选择教师</label><div class="col-sm-4"><select class="form-control" id="d_xb" data-id="'+i+'" onchange="d_xb()">'+d_xb+'</select></div><div class="col-sm-5"><select lay-filter="d_js" id="d_js'+i+'" lay-verify="required" lay-search></select></div></div></div></div></fieldset>';
+                $('div#d_pc').append(html)//循环输出批次
+
+            }
+            layui.use('form', function(){
+                //重新渲染选择教师的select框
+                var form = layui.form;
+                form.render('select','js');
+                form.render('checkbox');
+                form.on('select(d_xb)', function(data){
+                    var id = data.othis;
+                    console.log(id)
+                    $.get('{:url("teacher/getTeacher")}',{'id':id},function (index) {
+                        $('#d_js'+num).html("");
+                        for(var i=0;i<index.length;i++){
+                            $('#d_js'+num).append('<option value="'+index[i].uid+'">'+index[i].name+'</option>')
+                        }
+
+                        form.render('select','js');
+                    })
+                });
+            });
+            $('span#d_total').text(total.toFixed(2));
+        })
+    function d_xb() {
+        
+    }
+
+</script>

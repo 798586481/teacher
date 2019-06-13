@@ -1,0 +1,49 @@
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        <b>Version</b> {$version}
+    </div>
+    <strong>Copyright &copy; 广西大学行健文理学院</strong> All rights
+    reserved.
+</footer>
+
+<aside class="control-sidebar control-sidebar-dark">
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+        <li class="active"><a href="#control-sidebar-theme-demo-options-tab" data-toggle="tab"><i class="fa fa-wrench"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane" id="control-sidebar-home-tab"></div>
+    </div>
+</aside>
+<div class="control-sidebar-bg"></div>
+</div>
+<!-- jQuery 3 -->
+<script src="__STATIC__/js/jquery.min.js"></script>
+<!--<script src="https://cdn.bootcss.com/jquery/1.10.1/jquery.min.js"></script>-->
+<!-- Bootstrap 3.3.7 -->
+<script src="__STATIC__/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="__STATIC__/js/fastclick.min.js"></script>
+<!-- AdminLTE App -->
+<script src="__STATIC__/js/adminlte.js"></script>
+<script src="__STATIC__/js/layer.js"></script>
+<!-- Sparkline -->
+<script src="__STATIC__/js/jquery.sparkline.min.js"></script>
+<!-- SlimScroll -->
+<script src="__STATIC__/js/jquery.slimscroll.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="__STATIC__/js/demo.js"></script>
+<script src="__STATIC__/js/layui.all.js"></script>
+</body>
+<script>
+    $('a#exitLogin').click(function () {
+        layer.confirm('您确定要退出吗', {title:'退出系统',icon: 0}, function(index){
+            $.get('{:url("index/loginExit")}','',function () {
+                layer.msg('退出成功');
+                window.location.href = "{:url('login/index')}"
+            })
+
+            layer.close(index);
+        });
+    })
+</script>
